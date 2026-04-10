@@ -107,3 +107,38 @@ The demo is fully functional without a backend:
    - **Login**: Click Login button, demo accepts any input
    - **Dashboard**: View statistics and progress bars (requires login)
    - **Mobile**: Resize browser to test responsive sidebar
+
+---
+
+## 📋 Technical Details
+
+### Stack
+- **Frontend**: React 18 (via CDN)
+- **Styling**: Custom CSS with CSS Variables
+- **Animations**: Framer Motion (via CDN)
+- **Architecture**: Zero-build, ESM-based
+
+### Accessibility
+- Keyboard navigation support
+- Focus visible states
+- Reduced motion support
+- High contrast mode support
+- Screen reader friendly
+
+### Performance
+- < 200KB total page weight (before fonts)
+- Lazy loading via CDN
+- Optimized animations
+- Mobile-first CSS
+
+### SEO
+- Meta descriptions
+- Open Graph tags
+- Semantic HTML
+- Theme color
+
+---
+
+## 📄 License
+
+This project is part of FOSSEE (Free and Open Source Software Education) at IIT Bombay.
