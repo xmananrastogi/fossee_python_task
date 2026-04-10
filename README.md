@@ -10,9 +10,9 @@ A premium, performance-optimized redesign of the FOSSEE Workshop Portal. This im
 ### Run the Overhaul
 To view the new UI, simply run the following command from the project root:
 ```bash
-python3 -m http.server 8000 --directory static/overhaul
+python3 -m http.server 8001 --directory code/static/overhaul
 ```
-Then navigate to `http://localhost:8000` in your browser.
+Then navigate to `http://localhost:8001` in your browser. (Note: switched to 8001 to avoid common port conflicts).
 
 ---
 
@@ -46,16 +46,37 @@ The most challenging part was delivering a **Production-Grade UI without a build
 ## 🎨 Visual Showcase
 
 > [!NOTE]
-> Below are the key areas of the redesign.
+> Below are the key areas of the redesign. Screenshots should be captured using a screen capture tool and added to demonstrate the improvements.
 
 ### Hero Section
 High-impact messaging with an animated background gradient that feels alive and welcoming.
+![Hero Section Placeholder - Capture screenshot showing the hero section with the text "ENGINEERING THE FUTURE" and animated gradient background]
 
 ### Workshop Catalog
 Interactive cards that provide a clear overview of the content, duration, and target audience.
+![Workshop Catalog Placeholder - Capture screenshot showing workshop cards with details]
 
 ### Modern Dashboard
 A unified view for coordinators to track progress, replacing the basic table views of the original site.
+![Dashboard Placeholder - Capture screenshot showing the dashboard with statistics and progress indicators]
+
+### Mobile Responsiveness
+The design is fully responsive and optimized for mobile devices with:
+- Collapsible hamburger menu
+- Touch-friendly interaction targets (min 48px)
+- Fluid typography using CSS clamp()
+- Adaptive grids that wrap gracefully
+![Mobile View Placeholder - Capture screenshot showing mobile view with hamburger menu]
+
+---
+
+## 📱 Mobile Testing
+
+To test the mobile responsiveness:
+1. Run the server: `python3 -m http.server 8001 --directory code/static/overhaul`
+2. Open http://localhost:8001 in a browser
+3. Resize the browser window to mobile width (< 768px) or use device developer tools
+4. Click the hamburger menu icon to toggle the sidebar
 
 ---
 
