@@ -85,3 +85,25 @@ To test the mobile responsiveness:
 - [x] Progressive Git history (view logs for detailed flow).
 - [x] Modern, Performance-first UI.
 - [x] Mobile-optimized responsiveness.
+- [x] Fully functional demo (mock data mode).
+
+## 🧪 Testing the Demo
+
+The demo is fully functional without a backend:
+
+1. **Start the server:**
+   ```bash
+   cd code/static/overhaul
+   python3 -m http.server 8001
+   ```
+
+2. **Open in browser:** http://localhost:8001
+
+3. **Features to test:**
+   - **Home page**: Hero section with stats, click "EXPLORE_WORKSHOPS"
+   - **Workshops page**: Browse, search, filter by status
+   - **Workshop detail**: Click any workshop to view details
+   - **Booking**: Click "PROPOSE THIS WORKSHOP" button
+   - **Login**: Click Login button, demo accepts any input
+   - **Dashboard**: View statistics and progress bars (requires login)
+   - **Mobile**: Resize browser to test responsive sidebar
