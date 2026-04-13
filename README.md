@@ -19,10 +19,10 @@ Then navigate to `http://localhost:8001` in your browser. (Note: switched to 800
 ## 🧠 Reasoning and Design Decisions
 
 ### 1. What design principles guided your improvements?
-The redesign is guided by **Information Hierarchy** and **Visual Depth**:
-- **Boutique Aesthetics**: I avoided the generic "SaaS Blue" look in favor of a deep indigo/violet palette that feels institutional yet cutting-edge (IIT Bombay vibe).
-- **Glassmorphism**: Used extensive backdrop filters and subtle borders to create layers of depth, making the interface feel premium and modern.
-- **Micro-interactions**: Every button and card has an intentional hover state and entrance animation (via Framer Motion) to guide the user's focus during the "booking" flow.
+The redesign is guided by **Precision** and **High-Craft Aesthetics**:
+- **Swiss Technical Aesthetic**: I avoided the generic template look in favor of an "Ink & Slate" monochromatic palette (#050505/#111111) accented with Electric Cyan. This gives the portal a high-end engineering laboratory feel.
+- **Mechanical UI**: Integrated an SVG noise grain and a 32px pixel-grid backdrop to add tactical depth, moving away from sterile solid backgrounds.
+- **Micro-interactions**: Every button and card uses high-stiffness spring physics (via Framer Motion) providing instantaneous, mechanical feedback instead of slow, flowy transitions.
 
 ### 2. How did you ensure responsiveness across devices?
 Since students primarily access the portal on mobile, I took a **Fluid-First** approach:
@@ -45,28 +45,21 @@ The most challenging part was delivering a **Production-Grade UI without a build
 
 ## 🎨 Visual Showcase
 
-> [!NOTE]
-> Below are the key areas of the redesign. Screenshots should be captured using a screen capture tool and added to demonstrate the improvements.
+Here is a comparison between the original Django UI and the high-craft React redesign.
 
-### Hero Section
-High-impact messaging with an animated background gradient that feels alive and welcoming.
-![Hero Section Placeholder - Capture screenshot showing the hero section with the text "ENGINEERING THE FUTURE" and animated gradient background]
+### Before
+The original minimal, table-based user interface.
+![Original Django UI](static/overhaul/screenshots/before_desktop.png)
 
-### Workshop Catalog
-Interactive cards that provide a clear overview of the content, duration, and target audience.
-![Workshop Catalog Placeholder - Capture screenshot showing workshop cards with details]
+### After: The "Forge" Prototype
+The new "Swiss Technical" overhaul running purely via React & ESM.sh without any build pipeline.
 
-### Modern Dashboard
-A unified view for coordinators to track progress, replacing the basic table views of the original site.
-![Dashboard Placeholder - Capture screenshot showing the dashboard with statistics and progress indicators]
+#### Desktop View
+![Redesigned Desktop Overview](static/overhaul/screenshots/after_desktop.png)
 
-### Mobile Responsiveness
-The design is fully responsive and optimized for mobile devices with:
-- Collapsible hamburger menu
-- Touch-friendly interaction targets (min 48px)
-- Fluid typography using CSS clamp()
-- Adaptive grids that wrap gracefully
-![Mobile View Placeholder - Capture screenshot showing mobile view with hamburger menu]
+#### Mobile Responsiveness
+The design scales fluidity using CSS Clamp and grid-auto fits, maintaining the high-contrast aesthetic gracefully on smaller viewports.
+![Mobile Redesign Overview](static/overhaul/screenshots/after_mobile.png)
 
 ---
 
