@@ -2,103 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="FOSSEE Workshop Booking - Modern, responsive workshop management system for IIT Bombay's Free and Open Source Software Education program">
-    <meta name="theme-color" content="#050505">
-    <meta name="keywords" content="FOSSEE, workshop, IIT Bombay, open source, Python, training">
-    
-    <!-- Open Graph / Social Media -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="FOSSEE Workshop Booking Portal – Book and manage technical workshops on Python, Scilab, Linux, eSim and more. Powered by IIT Bombay.">
+    <meta name="theme-color" content="#1e3a5f">
+    <meta name="keywords" content="FOSSEE, workshop, IIT Bombay, open source, Python, Scilab, Linux, training, education">
+
+    <!-- Open Graph -->
     <meta property="og:title" content="FOSSEE Workshop Booking | IIT Bombay">
-    <meta property="og:description" content="Book technical workshops on Python, Linux, Scilab, eSim and more">
+    <meta property="og:description" content="Book free technical workshops on Python, Scilab, Linux, eSim and more">
     <meta property="og:type" content="website">
-    
+
     <!-- Mobile Web App -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
-    <title>FOSSEE FORGE | Workshop Booking System</title>
-    
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <title>FOSSEE Workshop Portal | IIT Bombay</title>
+
+    <!-- Fonts: Inter for UI, Fira Code for technical labels -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="./style.css">
-    
-    <!-- Brave-Hardened UMD Scripts (Globals) -->
-    <!-- We load these traditionally to bypass ESM blocking -->
+
+    <!-- React 18 via UMD (no build step needed) -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/htm@3.1.1/dist/htm.umd.js" crossorigin></script>
-    <!-- Framer Motion & Lucide Globals -->
-    <script src="https://unpkg.com/framer-motion@11/dist/framer-motion.js" crossorigin></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" crossorigin></script>
-    <!-- Note: lucide-react UMD is tricky, we'll use a local fallback if needed but try the ESM-to-Global bridge first -->
 </head>
 <body>
-    <div class="pixel-grid"></div>
-    <div class="scanline"></div>
-
-    <div id="initial-loader" style="position: fixed; inset: 0; z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #050505; color: #fff; font-family: 'JetBrains Mono', monospace; transition: opacity 0.5s ease;">
-        <div style="display: flex; gap: 8px; margin-bottom: 24px;">
-            <div style="width: 4px; height: 16px; background: #22d3ee; animation: pulse 1s infinite step-end;"></div>
-            <div style="width: 4px; height: 16px; background: #22d3ee; animation: pulse 1s infinite 0.2s step-end;"></div>
-            <div style="width: 4px; height: 16px; background: #22d3ee; animation: pulse 1s infinite 0.4s step-end;"></div>
-        </div>
-        
-        <div id="error-display" style="color: #f87171; max-width: 500px; text-align: left; display: none; font-size: 0.75rem; line-height: 1.5; padding: 1.5rem; border: 1px solid #dc2626; background: rgba(220, 38, 38, 0.05); overflow-x: auto;">
-            <div style="font-weight: 700; margin-bottom: 8px; text-transform: uppercase;">[ SYSTEM_CRITICAL_FAILURE ]</div>
-            <p id="error-text" style="white-space: pre-wrap; word-break: break-all;"></p>
-            <button onclick="location.reload()" style="margin-top: 1.5rem; background: #fff; border: none; color: #000; padding: 0.4rem 0.8rem; cursor: pointer; font-weight: 700; text-transform: uppercase; font-size: 0.7rem;">Reboot Script</button>
-        </div>
-        
-        <p id="loading-text" style="color: #525252; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;">
-            Init Forge Protocol... <span id="boot-status">PENDING</span>
-        </p>
-    </div>
-
     <div id="root"></div>
-
-    <script>
-        // System Health Check
-        const checkGlobals = () => {
-            const missing = [];
-            if (!window.React) missing.push('React');
-            if (!window.ReactDOM) missing.push('ReactDOM');
-            if (!window.htm) missing.push('HTM');
-            if (!window.Motion || !window.Motion.motion) missing.push('Framer Motion');
-            
-            if (missing.length > 0) {
-                window.onerror(`GLOBAL_DEPENDENCY_MISSING: ${missing.join(', ')}`, 'INIT', 0);
-                return false;
-            }
-            return true;
-        };
-
-        const statusEl = document.getElementById('boot-status');
-        if (statusEl) {
-            let dots = 0;
-            setInterval(() => {
-                dots = (dots + 1) % 4;
-                statusEl.innerText = 'PENDING' + '.'.repeat(dots);
-            }, 300);
-        }
-
-        window.onerror = function(msg, url, lineNo) {
-            const display = document.getElementById('error-display');
-            const text = document.getElementById('error-text');
-            const loading = document.getElementById('loading-text');
-            if (display && text) {
-                display.style.display = 'block';
-                text.innerText = msg + '\nSource: ' + url + ':' + lineNo;
-                if (loading) loading.style.display = 'none';
-            }
-        };
-        window.onunhandledrejection = function(event) {
-            window.onerror('PROMISE_REJECTION: ' + (event.reason ? (event.reason.message || event.reason) : 'Unknown'), '', 0);
-        };
-    </script>
-
-    <!-- Main Entry: Using type="text/javascript" to avoid ESM restrictions -->
     <script src="./src/App.js"></script>
-
-    <style>
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-    </style>
 </body>
 </html>
