@@ -1,203 +1,125 @@
-# FOSSEE Workshop Portal – React UI Redesign
+# FOSSEE Workshop Portal – UI/UX Redesign
 
-A mobile-first, accessible redesign of the [FOSSEE Workshop Booking](https://github.com/FOSSEE/workshop_booking) portal using React. The original Django backend remains untouched; this project replaces the Bootstrap-based templates with a modern, responsive React frontend.
+This is my redesign of the FOSSEE Workshop Booking portal ([original repo](https://github.com/FOSSEE/workshop_booking)). I rebuilt the frontend using React while keeping the Django backend as-is.
 
----
+The original site uses basic Bootstrap 4 with table layouts and a dark navbar. My version is a clean, mobile-first React SPA that covers all the same pages — login, registration, workshop browsing, proposing workshops, coordinator/instructor dashboards, etc.
 
-## 🚀 Setup Instructions
+## Setup
 
-### Prerequisites
-- Python 3 (for running a local static server)
-- A modern browser (Chrome, Firefox, Safari, Edge)
+**To run the redesigned frontend:**
 
-### Quick Start
 ```bash
-# Clone the repo
-git clone <your-repo-url>
-cd workshop_booking
-
-# Start the React frontend
 cd static/overhaul
 python3 -m http.server 8001
 ```
 
-Open [http://localhost:8001](http://localhost:8001) in your browser.
+Then open http://localhost:8001.
 
-### Running the Original Django Backend (optional)
+**To run the original Django site (for comparison):**
+
 ```bash
-# From the project root
-source venv/bin/activate      # or: python3 -m venv venv && source venv/bin/activate
+source venv/bin/activate
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver 8002
 ```
 
-The original site will be at [http://localhost:8002](http://localhost:8002).
+Original site will be at http://localhost:8002.
 
----
+## Design Decisions
 
-## 🧠 Reasoning & Design Decisions
+### What design principles guided my improvements?
 
-### 1. What design principles guided your improvements?
+I started by actually using the original site on my phone and noting what felt off. The dark navbar was fine on desktop but ate up space on mobile, the tables were unreadable without horizontal scrolling, and the forms had tiny tap targets.
 
-**Visual Hierarchy & Clarity** — The original UI uses plain Bootstrap tables and minimal styling. Students scanning on their phones need to immediately understand what they're looking at. I applied:
+My priorities were:
+- **Readability first** — I picked Inter as the main font and set up a proper type scale using `clamp()` so text is always readable, whether you're on a phone or a 27" monitor.
+- **Cards over tables** — For the workshop listing, I replaced the `<table>` with a card grid that stacks naturally on mobile. Each card shows the key info (name, duration, description) at a glance.
+- **Obvious actions** — The original site buries the "Propose Workshop" link in the navbar. I put it front and center with a warm amber button that stands out against the blue theme.
+- **Trust signals** — The blue/white palette with amber accents felt right for an IIT Bombay-affiliated portal. Not too corporate, not too playful.
 
-- **F-pattern reading hierarchy**: Hero section → stats bar → "How It Works" cards → Workshop catalogue. Each section has a clear heading, subtext, and single primary action.
-- **White-space rhythm**: A 4px/8px spacing scale (`--space-1` through `--space-16`) ensures consistent breathing room between elements without feeling sparse.
-- **Warm, institutional palette**: Deep ocean blue (`#1e3a5f`) for trust, warm amber (`#e67e22`) for action buttons. This replaces the generic Bootstrap dark navbar while staying professional for an IIT Bombay-associated portal.
-- **Card-based layouts**: Replaced raw `<table>` listings with rounded cards that have hover elevation, making each workshop type scannable and tappable.
+### How did I ensure responsiveness?
 
-### 2. How did you ensure responsiveness across devices?
+Three main things:
 
-Since the primary audience is **students on mobile**, I took a mobile-first approach:
+1. **CSS Grid with `auto-fill`** — The workshop cards use `repeat(auto-fill, minmax(300px, 1fr))` so they reflow from 3 columns to 1 without me writing specific breakpoints for every screen size.
+2. **Mobile nav drawer** — Below 768px, the navbar links collapse into a hamburger menu that slides in from the right. I made sure every link/button in the drawer is at least 48px tall (WCAG touch target guideline).
+3. **`clamp()` everywhere** — Headings, spacing, the hero section — it all scales fluidly. No awkward jumps between breakpoints.
 
-- **Fluid typography**: All heading sizes use `clamp()` (e.g. `font-size: clamp(1.75rem, 4vw, 2.5rem)`) so text scales continuously between phone and desktop without breakpoint jumps.
-- **CSS Grid auto-fill**: Workshop cards use `grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))` — they naturally reflow from 3 columns on desktop → 1 column on mobile.
-- **Hamburger slide-out drawer**: On screens below 768px, the navbar links collapse into a slide-out drawer from the right. All tap targets are ≥48px (WCAG guideline).
-- **Touch-friendly inputs**: All form inputs, buttons, and selects have `min-height: 48px` for comfortable thumb tapping.
-- **No horizontal scroll**: Overflow tables are wrapped in `overflow-x: auto` containers so data tables scroll horizontally instead of breaking layout.
+### What trade-offs did I make?
 
-### 3. What trade-offs did you make between design and performance?
+The biggest one was using React via CDN (`unpkg.com`) instead of setting up a proper build with Vite or Create React App. This means no tree-shaking, no hot reload during development, and I'm writing components using `htm` (tagged template literals) instead of JSX.
 
-| Decision | Trade-off | Reasoning |
-|---|---|---|
-| **Zero-build ESM via CDN** | No tree-shaking or code-splitting | Eliminated the need for Node.js/Vite/Webpack entirely. Total JS payload is ~45KB gzipped (React + ReactDOM + htm). For a content-light portal, this is perfectly acceptable. |
-| **Single App.js file** | No file-level component splitting | Keeps the project dead-simple to review and run. A build tool would be warranted at ~2000+ lines, but we're at ~550. |
-| **No Framer Motion** | Simpler animations | The previous approach loaded a 150KB Framer Motion bundle that often failed in strict browsers. I replaced it with CSS transitions (`transition`, `transform`) which are GPU-accelerated and zero-cost. |
-| **System font stack fallback** | Slight visual variance | Inter is loaded from Google Fonts, but a system stack (`-apple-system, BlinkMacSystemFont, ...`) is the fallback — no FOIT (Flash of Invisible Text). |
+But it also means anyone can run the project with just `python3 -m http.server` — no Node.js required. For a submission where the reviewer needs to quickly check the output, I think that's a fair trade. The total JS bundle is under 50KB gzipped.
 
-### 4. What was the most challenging part of the task?
+I also decided against using Framer Motion for animations. The previous version loaded it via CDN and it kept failing in some browsers. Plain CSS transitions look fine and don't add any weight.
 
-**Faithfully mirroring Django's page structure without a backend.**
+### What was most challenging?
 
-The original app has 15+ templates with role-based logic (coordinator vs. instructor views, authentication gating, Django forms). I had to:
+Getting the mock data to match the actual Django models. The original app has a pretty complex flow — coordinators propose workshops, instructors accept them, there's email verification, role-based views, etc. I had to read through all 15 Django templates and the `views.py` to understand what data each page expects, then create mock objects that mirror the ORM models (WorkshopType, Workshop, Profile, Comment).
 
-1. Reverse-engineer every URL route and template to understand the user flow.
-2. Create mock data that matches the Django ORM models (Workshop, WorkshopType, Profile, Comment).
-3. Implement client-side routing that mirrors Django's URL patterns (e.g. `/workshop/propose/` → Propose page).
-4. Handle role-based navigation — coordinators see "Propose Workshop" and "My Workshops", instructors see "Dashboard" with accept buttons.
+The other tricky part was the role-based navigation. Depending on whether you log in as a coordinator or instructor, you see different navbar links and get routed to different dashboard pages. I implemented a simple `user.position` check in the React state to handle this.
 
-The result is a working demo that exercises every page of the original app.
+## Screenshots
 
----
+### Before (original Django site)
+![before](static/overhaul/screenshots/before_desktop.png)
 
-## 🎨 Visual Showcase
+### After — Home Page
+![home](static/overhaul/screenshots/after_desktop.png)
 
-### Before: Original Django UI
-The original site uses raw Bootstrap 4 with basic table layouts and a dark navbar.
+### After — Workshop Types
+![workshops](static/overhaul/screenshots/after_workshops.png)
 
-![Original Django UI](static/overhaul/screenshots/before_desktop.png)
+### After — Login
+![login](static/overhaul/screenshots/after_login.png)
 
-### After: React Redesign
+### After — Registration Form
+![register](static/overhaul/screenshots/after_register.png)
 
-#### Home Page (Desktop)
-Clean hero section with clear value proposition, stats bar, and "How It Works" flow.
+### After — Mobile View
+![mobile](static/overhaul/screenshots/after_mobile_home.png)
 
-![Desktop Home](static/overhaul/screenshots/after_desktop.png)
+### After — Mobile Menu
+![mobile menu](static/overhaul/screenshots/after_mobile_menu.png)
 
-#### Workshop Types Catalogue
-Card-based grid with search. Each card shows name, description, duration, and a "View Details" link.
+## What I changed (and didn't change)
 
-![Workshop Types](static/overhaul/screenshots/after_workshops.png)
+**Changed:**
+- Rewrote all frontend templates as React components
+- New design system in `style.css` (CSS custom properties, spacing scale, color palette)
+- Added search/filter on the workshop types page
+- Mobile hamburger navigation
+- Accessibility improvements (ARIA roles, focus states, reduced-motion support)
+- SEO meta tags (description, Open Graph, semantic HTML)
 
-#### Login Page
-Centered card with clean form hierarchy and role selector for the demo.
+**Didn't change:**
+- Django backend — all the views, models, URLs, and forms are untouched
+- The database and migrations
+- Static assets in `workshop_app/static/`
 
-![Login](static/overhaul/screenshots/after_login.png)
-
-#### Registration Form
-Complete coordinator registration form matching all Django model fields (title, name, email, institute, department, phone, state, position).
-
-![Register](static/overhaul/screenshots/after_register.png)
-
-#### Mobile View
-Fully responsive. Hamburger menu, stacked cards, 48px touch targets.
-
-![Mobile Home](static/overhaul/screenshots/after_mobile_home.png)
-
-#### Mobile Menu
-Slide-out navigation drawer.
-
-![Mobile Menu](static/overhaul/screenshots/after_mobile_menu.png)
-
----
-
-## 📋 Pages Implemented
-
-| Page | Original Django Template | React Equivalent |
-|---|---|---|
-| Landing / Home | `index` → redirect | Rich hero + stats + features |
-| Login | `login.html` | Centered card with validation |
-| Register | `register.html` | Full coordinator form |
-| Workshop Types | `workshop_type_list.html` | Card grid with search |
-| Workshop Detail | `workshop_type_details.html` | Detail page with T&C |
-| Propose Workshop | `propose_workshop.html` | Form with date picker + T&C modal |
-| Coordinator Status | `workshop_status_coordinator.html` | Stats cards + accepted/pending tables |
-| Instructor Dashboard | `workshop_status_instructor.html` | Stats + pending requests with "Accept" buttons |
-| Profile | `view_profile.html` | Profile card with edit button |
-| Statistics | `statistics_app` | Summary stats overview |
-
----
-
-## ♿ Accessibility
-
-- Keyboard navigation support (`focus-visible` outlines)
-- ARIA roles on navbar, menus, dropdowns, and modals
-- `prefers-reduced-motion` media query disables animations
-- `forced-colors` media query ensures visibility in Windows High Contrast
-- Screen reader `.sr-only` utility class
-- All interactive elements ≥ 48px touch target
-
-## 🔍 SEO
-
-- Proper `<title>` tag
-- `<meta name="description">` and keywords
-- Open Graph tags for social sharing
-- Semantic HTML (`<nav>`, `<main>`, `<section>`, `<header>`, `<footer>`)
-- Single `<h1>` per page
-
-## ⚡ Performance
-
-- **Zero build step** — no Node.js, no bundler, no transpilation
-- **< 50KB JS** (React + ReactDOM + htm, gzipped)
-- **CSS-only animations** — no heavy animation libraries
-- **Font preconnect** for Google Fonts
-- **No images** — all icons are inline SVG (zero HTTP requests for icons)
-
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 static/overhaul/
-├── index.html          # Entry point: loads React via CDN
-├── style.css           # Complete design system (CSS custom properties)
+├── index.html       # entry point, loads React from CDN
+├── style.css        # design tokens + all component styles
 ├── src/
-│   └── App.js          # All React components and routing
-└── screenshots/        # Before/after screenshots for README
+│   └── App.js       # all React components
+└── screenshots/     # for this README
 ```
 
----
+## Tech Stack
 
-## 🛠 Tech Stack
+- React 18 (CDN, no build step)
+- htm for JSX-like templating
+- Vanilla CSS with custom properties
+- Inter + Fira Code from Google Fonts
 
-- **React 18** (via unpkg CDN, UMD build)
-- **htm** — JSX-like templating without a build step
-- **Vanilla CSS** — Custom properties, Grid, Flexbox, `clamp()`
-- **Inter + Fira Code** — Google Fonts for a clean, modern feel
-
----
-
-## ✅ Submission Checklist
+## Submission Checklist
 
 - [x] Code is readable and well-structured
-- [x] Git history shows progressive work (no single commit dumps)
-- [x] README includes reasoning answers and setup instructions
-- [x] Before/after screenshots included
+- [x] Git history shows progressive work
+- [x] README includes reasoning and setup instructions
+- [x] Screenshots included
 - [x] Code is documented where necessary
-
----
-
-## 📄 License
-
-This project is part of [FOSSEE](https://fossee.in) (Free and Open Source Software Education) at IIT Bombay.

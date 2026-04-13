@@ -1,9 +1,6 @@
-/* ============================================
-   FOSSEE Workshop Portal – Design System
-   Mobile-first, accessible, warm palette
-   ============================================ */
+/* FOSSEE Workshop Portal - main stylesheet */
 
-/* --- CSS Custom Properties (Design Tokens) --- */
+/* Color palette and spacing tokens */
 :root {
     /* Primary: deep ocean blue */
     --primary-900: #0c2340;
@@ -91,7 +88,7 @@
     --sidebar-width: 280px;
 }
 
-/* --- Reset & Base --- */
+/* Reset & Base */
 *, *::before, *::after {
     margin: 0;
     padding: 0;
@@ -114,7 +111,7 @@ body {
     overflow-x: hidden;
 }
 
-/* --- Typography --- */
+/* Typography */
 h1, h2, h3, h4 {
     font-weight: 700;
     line-height: 1.2;
@@ -136,7 +133,7 @@ a {
 }
 a:hover { color: var(--primary-800); }
 
-/* --- Navbar --- */
+/* Navbar */
 .navbar {
     position: sticky;
     top: 0;
@@ -259,7 +256,7 @@ a:hover { color: var(--primary-800); }
     background: var(--gray-100);
 }
 
-/* --- Mobile Nav Drawer --- */
+/* Mobile Nav Drawer */
 .mobile-nav-overlay {
     display: none;
     position: fixed;
@@ -341,7 +338,7 @@ a:hover { color: var(--primary-800); }
     color: var(--primary-700);
 }
 
-/* --- Hero Section --- */
+/* Hero Section */
 .hero {
     position: relative;
     padding: var(--space-16) var(--space-6) var(--space-12);
@@ -463,7 +460,7 @@ a:hover { color: var(--primary-800); }
     font-weight: 500;
 }
 
-/* --- Page Container --- */
+/* Page Container */
 .page-container {
     max-width: var(--max-width);
     margin: 0 auto;
@@ -481,7 +478,7 @@ a:hover { color: var(--primary-800); }
     font-size: 1rem;
 }
 
-/* --- Cards --- */
+/* Cards */
 .card {
     background: var(--surface-card);
     border: 1px solid var(--gray-200);
@@ -559,14 +556,14 @@ a:hover { color: var(--primary-800); }
     color: var(--primary-700);
 }
 
-/* --- Grid layouts --- */
+/* Grid layouts */
 .grid-workshops {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: var(--space-6);
 }
 
-/* --- Form elements --- */
+/* Form elements */
 .form-card {
     max-width: 480px;
     margin: 0 auto;
@@ -672,7 +669,7 @@ a:hover { color: var(--primary-800); }
     background: var(--primary-50);
 }
 
-/* --- Tables --- */
+/* Tables */
 .table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -707,7 +704,7 @@ tr:hover td {
     background: var(--gray-50);
 }
 
-/* --- Search / Filter bar --- */
+/* Search / Filter bar */
 .search-bar {
     display: flex;
     gap: var(--space-3);
@@ -760,7 +757,7 @@ tr:hover td {
     border-color: var(--primary-500);
 }
 
-/* --- Alert / Info boxes --- */
+/* Alert / Info boxes */
 .alert {
     padding: var(--space-4) var(--space-5);
     border-radius: var(--radius-md);
@@ -791,7 +788,7 @@ tr:hover td {
     border: 1px solid #f5c6cb;
 }
 
-/* --- Empty state --- */
+/* Empty state */
 .empty-state {
     text-align: center;
     padding: var(--space-16) var(--space-6);
@@ -812,7 +809,7 @@ tr:hover td {
     margin: 0 auto var(--space-6);
 }
 
-/* --- Profile / Dashboard --- */
+/* Profile / Dashboard */
 .profile-header {
     display: flex;
     align-items: center;
@@ -850,7 +847,7 @@ tr:hover td {
     font-size: 2rem;
 }
 
-/* --- Footer --- */
+/* Footer */
 .footer {
     text-align: center;
     padding: var(--space-6);
@@ -862,7 +859,7 @@ tr:hover td {
     color: var(--primary-300);
 }
 
-/* --- Checkbox / Radio --- */
+/* Checkbox / Radio */
 .checkbox-wrap {
     display: flex;
     align-items: center;
@@ -876,7 +873,7 @@ tr:hover td {
     cursor: pointer;
 }
 
-/* --- Pagination --- */
+/* Pagination */
 .pagination {
     display: flex;
     align-items: center;
@@ -905,7 +902,7 @@ tr:hover td {
     border-color: var(--primary-700);
 }
 
-/* --- Utility --- */
+/* Utility */
 .text-center { text-align: center; }
 .text-sm { font-size: 0.875rem; }
 .text-xs { font-size: 0.75rem; }
@@ -916,7 +913,7 @@ tr:hover td {
 .mb-6 { margin-bottom: var(--space-6); }
 .flex-between { display: flex; justify-content: space-between; align-items: center; }
 
-/* --- Accessibility --- */
+/* Accessibility */
 *:focus-visible {
     outline: 2px solid var(--primary-500);
     outline-offset: 2px;
@@ -949,7 +946,7 @@ tr:hover td {
     .badge { border: 1px solid ButtonText; }
 }
 
-/* === RESPONSIVE === */
+/* responsive */
 
 /* Tablet */
 @media (max-width: 768px) {
@@ -990,7 +987,7 @@ tr:hover td {
     }
 }
 
-/* --- Feature cards on home page --- */
+/* Feature cards on home page */
 .features-section {
     padding: var(--space-12) var(--space-6);
     background: var(--surface-bg);

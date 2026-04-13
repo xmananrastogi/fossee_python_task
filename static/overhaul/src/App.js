@@ -1,21 +1,5 @@
-/**
- * FOSSEE Workshop Portal – React Frontend
- * ========================================
- * A complete client-side reimplementation of the Django template pages.
- * Uses React 18 (UMD) + htm for JSX-like templating without a build step.
- * 
- * Pages mirrored from the Django app:
- *   - Home (public landing)
- *   - Login
- *   - Register
- *   - Workshop Types list
- *   - Workshop Type detail
- *   - Propose Workshop
- *   - Coordinator Status
- *   - Instructor Dashboard
- *   - Profile (view/edit)
- *   - Workshop Details + Comments
- */
+// FOSSEE Workshop Portal - React frontend
+// Uses React 18 via CDN + htm for templating (no build step needed)
 (function () {
     'use strict';
 
@@ -23,9 +7,7 @@
     const { createRoot } = ReactDOM;
     const html = htm.bind(React.createElement);
 
-    // ──────────────────────────────────────────────────────────
-    // MOCK DATA (mirrors what Django ORM would serve)
-    // ──────────────────────────────────────────────────────────
+    // Mock data — mirrors the Django models
 
     const DEPARTMENT_CHOICES = [
         'Computer Science', 'Information Technology', 'Civil Engineering',
@@ -64,9 +46,7 @@
 
     const STATUS_MAP = { 0: 'Pending', 1: 'Accepted', 2: 'Deleted' };
 
-    // ──────────────────────────────────────────────────────────
-    // SVG ICON COMPONENTS
-    // ──────────────────────────────────────────────────────────
+    // Inline SVG icons (avoids external icon library dependency)
     const Svg = ({ children, size = 20, ...props }) =>
         html`<svg xmlns="http://www.w3.org/2000/svg" width=${size} height=${size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" ...${props}>${children}</svg>`;
 
@@ -91,9 +71,7 @@
         Send: (p) => html`<${Svg} ...${p}><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/><//>`,
     };
 
-    // ──────────────────────────────────────────────────────────
-    // NAVBAR COMPONENT
-    // ──────────────────────────────────────────────────────────
+    // Navbar with responsive hamburger menu
     const Navbar = ({ page, setPage, user, onLogout }) => {
         const [mobileOpen, setMobileOpen] = useState(false);
         const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -232,9 +210,7 @@
         `;
     };
 
-    // ──────────────────────────────────────────────────────────
-    // HOME PAGE
-    // ──────────────────────────────────────────────────────────
+    // Home page
     const HomePage = ({ setPage, user }) => html`
         <main>
             <section className="hero">
@@ -335,9 +311,7 @@
         </main>
     `;
 
-    // ──────────────────────────────────────────────────────────
-    // LOGIN PAGE
-    // ──────────────────────────────────────────────────────────
+    // Login
     const LoginPage = ({ onLogin, setPage }) => {
         const [username, setUsername] = useState('');
         const [password, setPassword] = useState('');
@@ -395,9 +369,7 @@
         `;
     };
 
-    // ──────────────────────────────────────────────────────────
-    // REGISTER PAGE
-    // ──────────────────────────────────────────────────────────
+    // Registration form (matches Django's UserRegistrationForm + ProfileForm fields)
     const RegisterPage = ({ setPage, onLogin }) => {
         const [form, setForm] = useState({
             username: '', password: '', confirmPassword: '', email: '',
@@ -519,9 +491,7 @@
         `;
     };
 
-    // ──────────────────────────────────────────────────────────
-    // WORKSHOP TYPES LIST PAGE
-    // ──────────────────────────────────────────────────────────
+    // Workshop types list with search
     const WorkshopTypesPage = ({ setPage }) => {
         const [search, setSearch] = useState('');
 
@@ -579,9 +549,7 @@
         `;
     };
 
-    // ──────────────────────────────────────────────────────────
-    // WORKSHOP TYPE DETAIL PAGE
-    // ──────────────────────────────────────────────────────────
+    // Workshop type detail (replaces workshop_type_details.html)
     const WorkshopDetailPage = ({ workshopTypeId, setPage, user }) => {
         const wt = WORKSHOP_TYPES.find(w => w.id === workshopTypeId);
         if (!wt) return html`<div className="page-container"><p>Workshop not found.</p></div>`;
@@ -628,9 +596,7 @@
         `;
     };
 
-    // ──────────────────────────────────────────────────────────
-    // PROPOSE WORKSHOP PAGE (Coordinator)
-    // ──────────────────────────────────────────────────────────
+    // Propose workshop form (coordinator only)
     const ProposeWorkshopPage = ({ setPage }) => {
         const [workshopType, setWorkshopType] = useState('');
         const [date, setDate] = useState('');
@@ -730,9 +696,7 @@
         `;
     };
 
-    // ──────────────────────────────────────────────────────────
-    // COORDINATOR STATUS PAGE
-    // ──────────────────────────────────────────────────────────
+    // Coordinator's "My Workshops" status page
     const CoordinatorStatusPage = ({ user, setPage }) => {
         const myWorkshops = MOCK_WORKSHOPS;
         const accepted = myWorkshops.filter(w => w.status === 1);
@@ -815,9 +779,7 @@
         `;
     };
 
-    // ──────────────────────────────────────────────────────────
-    // INSTRUCTOR DASHBOARD PAGE
-    // ──────────────────────────────────────────────────────────
+    // Instructor dashboard — shows pending requests + accepted workshops
     const InstructorDashboardPage = ({ user }) => {
         const [message, setMessage] = useState('');
         const pending = MOCK_WORKSHOPS.filter(w => w.status === 0);
@@ -900,9 +862,7 @@
         `;
     };
 
-    // ──────────────────────────────────────────────────────────
-    // PROFILE PAGE
-    // ──────────────────────────────────────────────────────────
+    // Profile page
     const ProfilePage = ({ user }) => html`
         <div className="page-container">
             <div style=${{ maxWidth: 640 }}>
@@ -944,9 +904,7 @@
         </div>
     `;
 
-    // ──────────────────────────────────────────────────────────
-    // STATISTICS PAGE (placeholder)
-    // ──────────────────────────────────────────────────────────
+    // Statistics page (summary view — full charts live in Django's statistics_app)
     const StatisticsPage = () => html`
         <div className="page-container">
             <div className="page-header">
@@ -978,9 +936,7 @@
         </div>
     `;
 
-    // ──────────────────────────────────────────────────────────
-    // FOOTER
-    // ──────────────────────────────────────────────────────────
+    // Footer
     const Footer = () => html`
         <footer className="footer">
             <p>Developed by <a href="https://fossee.in" target="_blank" rel="noopener noreferrer">FOSSEE</a> group, IIT Bombay
@@ -988,9 +944,7 @@
         </footer>
     `;
 
-    // ──────────────────────────────────────────────────────────
-    // APP ROOT
-    // ──────────────────────────────────────────────────────────
+    // App root — handles routing and auth state
     const App = () => {
         const [page, setPage] = useState('home');
         const [user, setUser] = useState(null);
@@ -1071,9 +1025,7 @@
         `;
     };
 
-    // ──────────────────────────────────────────────────────────
-    // MOUNT
-    // ──────────────────────────────────────────────────────────
+    // Mount
     const root = document.getElementById('root');
     if (root) {
         createRoot(root).render(html`<${App} />`);
