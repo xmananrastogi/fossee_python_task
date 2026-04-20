@@ -1,6 +1,6 @@
-/* FOSSEE Workshop Portal - main stylesheet */
+/* fossee portal styling written from scratch */
 
-/* Color palette and spacing tokens */
+/* custom colors - kept it simple so I didn't need tailwind */
 :root {
     /* Primary: deep ocean blue */
     --primary-900: #0c2340;
@@ -133,7 +133,7 @@ a {
 }
 a:hover { color: var(--primary-800); }
 
-/* Navbar */
+/* navbar stuff */
 .navbar {
     position: sticky;
     top: 0;
@@ -242,7 +242,7 @@ a:hover { color: var(--primary-800); }
     border-color: var(--primary-500);
 }
 
-/* Mobile Hamburger */
+/* hamburger btn for phones */
 .hamburger {
     display: none;
     background: none;

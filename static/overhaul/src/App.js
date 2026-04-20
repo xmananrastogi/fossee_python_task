@@ -1,5 +1,5 @@
-// FOSSEE Workshop Portal - React frontend
-// Uses React 18 via CDN + htm for templating (no build step needed)
+// FOSSEE frontend rewrite in react
+// pulling react and htm from cdn to avoid webpack configs completely
 (function () {
     'use strict';
 
@@ -7,7 +7,7 @@
     const { createRoot } = ReactDOM;
     const html = htm.bind(React.createElement);
 
-    // Mock data — mirrors the Django models
+    // hardcoded mock data for now. needs to be swapped with actual fetch calls to django API later
 
     const DEPARTMENT_CHOICES = [
         'Computer Science', 'Information Technology', 'Civil Engineering',
@@ -46,7 +46,7 @@
 
     const STATUS_MAP = { 0: 'Pending', 1: 'Accepted', 2: 'Deleted' };
 
-    // Inline SVG icons (avoids external icon library dependency)
+    // copying some inline svgs here so I don't have to load fontawesome
     const Svg = ({ children, size = 20, ...props }) =>
         html`<svg xmlns="http://www.w3.org/2000/svg" width=${size} height=${size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" ...${props}>${children}</svg>`;
 
@@ -369,7 +369,7 @@
         `;
     };
 
-    // Registration form (matches Django's UserRegistrationForm + ProfileForm fields)
+    // mega registration form. tried to match all the fields from the original django code
     const RegisterPage = ({ setPage, onLogin }) => {
         const [form, setForm] = useState({
             username: '', password: '', confirmPassword: '', email: '',
@@ -549,7 +549,7 @@
         `;
     };
 
-    // Workshop type detail (replaces workshop_type_details.html)
+    // details page for specific workshop, replaced the old workshop_type_details.html template
     const WorkshopDetailPage = ({ workshopTypeId, setPage, user }) => {
         const wt = WORKSHOP_TYPES.find(w => w.id === workshopTypeId);
         if (!wt) return html`<div className="page-container"><p>Workshop not found.</p></div>`;
@@ -944,7 +944,7 @@
         </footer>
     `;
 
-    // App root — handles routing and auth state
+    // main app root component - deals with routing and user auth state
     const App = () => {
         const [page, setPage] = useState('home');
         const [user, setUser] = useState(null);
